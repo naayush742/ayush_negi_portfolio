@@ -23,7 +23,9 @@ export const TerminalOverlay: React.FC<TerminalOverlayProps> = ({
 }) => {
   const [inputVal, setInputVal] = useState('');
   const [history, setHistory] = useState<CommandOutput[]>([
-    { res: "AYUSH_NEGI_OS v3.0.0 — System initialized. Type 'help', 'whoami', or 'linux' to launch Linux Terminal Lab." },
+    {
+      res: "AYUSH_NEGI_OS v3.0.0 — System initialized. Type 'help', 'whoami', or 'linux' to launch Linux Terminal Lab.",
+    },
   ]);
 
   const [currentTime, setCurrentTime] = useState('');
@@ -164,11 +166,12 @@ Opening Python diagnostic modal...`,
       case 'theme green':
       case 'theme red':
       case 'theme orange':
-      case 'theme purple':
+      case 'theme purple': {
         const theme = cmd.split(' ')[1];
         onSetAura(theme);
         newHistory.push({ res: `Aura theme updated to ${theme.toUpperCase()}.`, type: 'res' });
         break;
+      }
 
       default:
         newHistory.push({
@@ -184,7 +187,7 @@ Opening Python diagnostic modal...`,
 
   return (
     <>
-      <div id="terminal-overlay" className={isOpen ? 'active' : ''}>
+      <div id="terminal-overlay" className={isOpen ? 'active' : ''} data-lenis-prevent>
         <div className="term-header">
           <span>AYUSH_NEGI_OS v3.0.0 — TERMINAL_ACCESS</span>
           <span id="term-time">{currentTime}</span>
@@ -195,7 +198,10 @@ Opening Python diagnostic modal...`,
             <React.Fragment key={idx}>
               {item.cmd && <span className="term-line cmd">{item.cmd}</span>}
               {item.res && (
-                <span className={`term-line ${item.type === 'error' ? 'error' : 'res'}`} style={{ whiteSpace: 'pre-wrap' }}>
+                <span
+                  className={`term-line ${item.type === 'error' ? 'error' : 'res'}`}
+                  style={{ whiteSpace: 'pre-wrap' }}
+                >
                   {item.res}
                 </span>
               )}
@@ -219,9 +225,23 @@ Opening Python diagnostic modal...`,
       </div>
 
       {/* CLI TRIGGER BUTTON */}
-      <button className="cli-trigger" id="cli-open" title="Open System Terminal (CLI)" onClick={() => (isOpen ? onClose() : undefined)}>
+      <button
+        className="cli-trigger"
+        id="cli-open"
+        title="Open System Terminal (CLI)"
+        onClick={() => (isOpen ? onClose() : undefined)}
+      >
         <span className="cli-trigger-icon" onClick={() => (isOpen ? onClose() : undefined)}>
-          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="28"
+            height="28"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="4 17 10 11 4 5" />
             <line x1="12" y1="19" x2="20" y2="19" />
           </svg>

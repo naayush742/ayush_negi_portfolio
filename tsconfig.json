@@ -13,6 +13,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@lenis/react": ["node_modules/lenis/dist/lenis-react.d.ts"]
+    },
 
     /* Linting */
     "strict": true,

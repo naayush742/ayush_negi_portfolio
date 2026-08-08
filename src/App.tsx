@@ -1,24 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { ReactLenis, useLenis } from '@lenis/react';
 import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
 import { ParticleCanvas } from './components/ParticleCanvas';
-import { BootOverlay } from './components/BootOverlay';
+import { ScrollTunnelCanvas } from './components/ScrollTunnelCanvas';
 import { Navbar } from './components/Navbar';
 import { Ticker } from './components/Ticker';
-import { Hero } from './components/Hero';
-import { StatsBar } from './components/StatsBar';
-import { AboutSection } from './components/AboutSection';
-import { SkillsSection } from './components/SkillsSection';
-import { ProjectsSection } from './components/ProjectsSection';
-import { ExperienceSection } from './components/ExperienceSection';
-import { EducationSection } from './components/EducationSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
 import { AuraControl } from './components/AuraControl';
 import { SystemLog } from './components/SystemLog';
 import { TerminalOverlay } from './components/TerminalOverlay';
 import { Linux3DArenaModal } from './components/Linux3DArenaModal';
+import { HotspotModal } from './components/HotspotModal';
 import { soundFx } from './utils/audioEffects';
+
+const LenisSmoothAnchorHandler: React.FC = () => {
+  const lenis = useLenis();
+
+  useEffect(() => {
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (!target) return;
+      const href = target.getAttribute('href');
+      if (href && href.startsWith('#') && href.length > 1) {
+        const targetElement = document.querySelector(href);
+        if (targetElement) {
+          e.preventDefault();
+          lenis?.scrollTo(targetElement as HTMLElement, {
+            offset: -80,
+            duration: 1.4,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+        }
+      }
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+    return () => document.removeEventListener('click', handleAnchorClick);
+  }, [lenis]);
+
+  return null;
+};
 
 export const App: React.FC = () => {
   const [auraTheme, setAuraTheme] = useState<string>(() => {
@@ -26,7 +47,7 @@ export const App: React.FC = () => {
   });
   const [glitchActive, setGlitchActive] = useState<boolean>(false);
   const [crtActive, setCrtActive] = useState<boolean>(true);
-  const [bitTrailActive, setBitTrailActive] = useState<boolean>(true);
+  const [bitTrailActive, setBitTrailActive] = useState<boolean>(false);
 
   const [activeModalSlug, setActiveModalSlug] = useState<string | null>(null);
   const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(false);
@@ -187,27 +208,34 @@ export const App: React.FC = () => {
   }, [bitTrailActive]);
 
   return (
-    <>
-      <BootOverlay />
+    <ReactLenis
+      root
+      options={{
+        lerp: 0.08,
+        duration: 1.2,
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.5,
+      }}
+    >
+      <LenisSmoothAnchorHandler />
       <CustomCursor />
       <ScrollProgress />
       <ParticleCanvas />
+      <ScrollTunnelCanvas />
 
       <Navbar />
       <Ticker />
 
-      <main>
-        <Hero />
-        <StatsBar />
-        <AboutSection />
-        <SkillsSection />
-        <ProjectsSection />
-        <ExperienceSection />
-        <EducationSection />
-        <ContactSection />
+      <main style={{ minHeight: '850vh', position: 'relative', pointerEvents: 'none' }}>
+        <div id="home" style={{ position: 'absolute', top: '12%' }} />
+        <div id="about" style={{ position: 'absolute', top: '36%' }} />
+        <div id="tech" style={{ position: 'absolute', top: '50%' }} />
+        <div id="materials" style={{ position: 'absolute', top: '64%' }} />
+        <div id="experience" style={{ position: 'absolute', top: '76%' }} />
+        <div id="education" style={{ position: 'absolute', top: '86%' }} />
+        <div id="contact" style={{ position: 'absolute', top: '94%' }} />
       </main>
-
-      <Footer />
 
       <AuraControl
         currentAura={auraTheme}
@@ -241,18 +269,26 @@ export const App: React.FC = () => {
         onClick={() => setIsTerminalOpen(!isTerminalOpen)}
       >
         <span className="cli-trigger-icon">
-          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            width="28"
+            height="28"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
             <polyline points="4 17 10 11 4 5" />
             <line x1="12" y1="19" x2="20" y2="19" />
           </svg>
         </span>
       </button>
 
-      <Linux3DArenaModal
-        isOpen={isLinuxArenaOpen}
-        onClose={() => setIsLinuxArenaOpen(false)}
-      />
-    </>
+      <Linux3DArenaModal isOpen={isLinuxArenaOpen} onClose={() => setIsLinuxArenaOpen(false)} />
+
+      <HotspotModal slug={activeModalSlug} onClose={() => setActiveModalSlug(null)} />
+    </ReactLenis>
   );
 };
 

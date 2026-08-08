@@ -21,7 +21,7 @@ export const HotspotModal: React.FC<HotspotModalProps> = ({ slug, onClose }) => 
   const title = tech ? tech.name.toUpperCase() : slug.toUpperCase();
 
   return (
-    <div className={`modal-overlay ${slug ? 'active' : ''}`} id="hotspot-modal">
+    <div className={`modal-overlay ${slug ? 'active' : ''}`} id="hotspot-modal" data-lenis-prevent>
       <div className="modal-container">
         <div className="modal-header">
           <div className="modal-header-left">

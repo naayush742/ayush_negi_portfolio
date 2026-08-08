@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useLenis } from '@lenis/react';
 
 export const ScrollProgress: React.FC = () => {
   const [scrollPercent, setScrollPercent] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      if (totalHeight > 0) {
-        const currentProgress = (window.scrollY / totalHeight) * 100;
-        setScrollPercent(currentProgress);
-      }
-    };
+  useLenis(({ progress }) => {
+    setScrollPercent(progress * 100);
+  });
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  return (
-    <div
-      id="scroll-progress"
-      style={{ width: `${scrollPercent}%` }}
-    />
-  );
+  return <div id="scroll-progress" style={{ width: `${scrollPercent}%` }} />;
 };

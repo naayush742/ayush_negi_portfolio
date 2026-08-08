@@ -27,7 +27,11 @@ export const Linux3DArenaModal: React.FC<Linux3DArenaModalProps> = ({ isOpen, on
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay active" style={{ zIndex: 11000, padding: 0, animation: 'fadeInOverlay 0.3s ease-out' }}>
+    <div
+      className="modal-overlay active"
+      data-lenis-prevent
+      style={{ zIndex: 11000, padding: 0, animation: 'fadeInOverlay 0.3s ease-out' }}
+    >
       <div
         className="modal-container"
         style={{
