@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { ReactLenis, useLenis } from '@lenis/react';
 import { CustomCursor } from './components/CustomCursor';
+import { ResumeModal } from './components/ResumeModal';
 import { ScrollProgress } from './components/ScrollProgress';
 import { ParticleCanvas } from './components/ParticleCanvas';
 import { ScrollTunnelCanvas } from './components/ScrollTunnelCanvas';
 import { Ticker } from './components/Ticker';
-import { AuraControl } from './components/AuraControl';
 import { SystemLog } from './components/SystemLog';
 import { TerminalOverlay } from './components/TerminalOverlay';
 import { Linux3DArenaModal } from './components/Linux3DArenaModal';
 import { HotspotModal } from './components/HotspotModal';
+import { SideNav } from './components/SideNav';
+import { TechHudOverlay } from './components/TechHudOverlay';
 import { soundFx } from './utils/audioEffects';
 
 const LenisSmoothAnchorHandler: React.FC = () => {
@@ -46,11 +48,62 @@ export const App: React.FC = () => {
   });
   const [glitchActive, setGlitchActive] = useState<boolean>(false);
   const [crtActive, setCrtActive] = useState<boolean>(true);
-  const [bitTrailActive, setBitTrailActive] = useState<boolean>(false);
+  const [bitTrailActive, setBitTrailActive] = useState<boolean>(true);
 
   const [activeModalSlug, setActiveModalSlug] = useState<string | null>(null);
   const [isTerminalOpen, setIsTerminalOpen] = useState<boolean>(false);
   const [isLinuxArenaOpen, setIsLinuxArenaOpen] = useState<boolean>(false);
+  const [isResumeOpen, setIsResumeOpen] = useState<boolean>(false);
+
+  // 3D Gyroscopic Spatial Tilt Physics on Cards & Skill Badges
+  useEffect(() => {
+    const handleTiltMouseMove = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+
+      const tiltable = target.closest(
+        '.mat-card, .tc, .cloud-topology-card, .exp-card, .edu-card'
+      ) as HTMLElement | null;
+
+      if (!tiltable) return;
+
+      const rect = tiltable.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -10;
+      const rotateY = ((x - centerX) / centerX) * 10;
+
+      tiltable.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+      tiltable.style.transition = 'transform 0.08s ease-out';
+    };
+
+    const handleTiltMouseLeave = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target) return;
+
+      const tiltable = target.closest(
+        '.mat-card, .tc, .cloud-topology-card, .exp-card, .edu-card'
+      ) as HTMLElement | null;
+
+      if (tiltable) {
+        tiltable.style.transform =
+          'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        tiltable.style.transition = 'transform 0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+      }
+    };
+
+    window.addEventListener('mousemove', handleTiltMouseMove);
+    document.addEventListener('mouseout', handleTiltMouseLeave);
+
+    return () => {
+      window.removeEventListener('mousemove', handleTiltMouseMove);
+      document.removeEventListener('mouseout', handleTiltMouseLeave);
+    };
+  }, []);
 
   // Global High-Tech Sound FX for Hovers & Clicks across whole site
   useEffect(() => {
@@ -72,18 +125,62 @@ export const App: React.FC = () => {
 
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
+      if (!target) return;
+
+      // 1. HUD / Navigation / Side Rail Controls
       if (
-        target &&
-        (target.tagName === 'A' ||
-          target.tagName === 'BUTTON' ||
-          target.closest('button') ||
-          target.closest('a') ||
-          target.classList.contains('tc') ||
-          target.classList.contains('mat-card') ||
-          target.classList.contains('fpill'))
+        target.closest('.side-nav-rail') ||
+        target.closest('.side-nav-container') ||
+        target.closest('.top-hud-bar') ||
+        target.closest('.left-hud-rail')
       ) {
-        soundFx.playClick();
+        soundFx.playHudClick();
+        return;
       }
+
+      // 2. Hero / Home Area
+      if (target.closest('#home') || target.closest('.hero')) {
+        soundFx.playHeroClick();
+        return;
+      }
+
+      // 3. About Section
+      if (target.closest('#about') || target.closest('.about-section')) {
+        soundFx.playAboutClick();
+        return;
+      }
+
+      // 4. Skills / Tech Matrix Section
+      if (target.closest('#tech') || target.closest('.tech-section')) {
+        soundFx.playSkillsClick();
+        return;
+      }
+
+      // 5. Projects Section
+      if (target.closest('#materials') || target.closest('.materials-section')) {
+        soundFx.playProjectsClick();
+        return;
+      }
+
+      // 6. Experience & Education Section
+      if (
+        target.closest('#experience') ||
+        target.closest('.experience-section') ||
+        target.closest('#education') ||
+        target.closest('.education-section')
+      ) {
+        soundFx.playExperienceClick();
+        return;
+      }
+
+      // 7. Contact Section
+      if (target.closest('#contact') || target.closest('.contact-section')) {
+        soundFx.playContactClick();
+        return;
+      }
+
+      // 8. Generic fallback click anywhere else on canvas / page
+      soundFx.playGenericClick();
     };
 
     window.addEventListener('mouseover', handleMouseOver);
@@ -220,6 +317,14 @@ export const App: React.FC = () => {
       <LenisSmoothAnchorHandler />
       <CustomCursor />
       <ScrollProgress />
+      <TechHudOverlay
+        currentAura={auraTheme}
+        onSelectAura={(t) => setAuraTheme(t)}
+        onOpenTerminal={() => setIsTerminalOpen(true)}
+        onOpenLinuxArena={() => setIsLinuxArenaOpen(true)}
+        onOpenResume={() => setIsResumeOpen(true)}
+      />
+      <SideNav />
       <ParticleCanvas />
       <ScrollTunnelCanvas />
 
@@ -235,17 +340,6 @@ export const App: React.FC = () => {
         <div id="contact" style={{ position: 'absolute', top: '94%' }} />
       </main>
 
-      <AuraControl
-        currentAura={auraTheme}
-        onSelectAura={(t) => setAuraTheme(t)}
-        glitchActive={glitchActive}
-        onToggleGlitch={() => setGlitchActive(!glitchActive)}
-        crtActive={crtActive}
-        onToggleCrt={() => setCrtActive(!crtActive)}
-        bitTrailActive={bitTrailActive}
-        onToggleBitTrail={() => setBitTrailActive(!bitTrailActive)}
-      />
-
       <SystemLog />
 
       <TerminalOverlay
@@ -259,31 +353,9 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* FLOATING CLI TERMINAL BUTTON */}
-      <button
-        className="cli-trigger"
-        id="cli-open"
-        title="Open System Terminal (CLI)"
-        onClick={() => setIsTerminalOpen(!isTerminalOpen)}
-      >
-        <span className="cli-trigger-icon">
-          <svg
-            viewBox="0 0 24 24"
-            width="28"
-            height="28"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <polyline points="4 17 10 11 4 5" />
-            <line x1="12" y1="19" x2="20" y2="19" />
-          </svg>
-        </span>
-      </button>
-
       <Linux3DArenaModal isOpen={isLinuxArenaOpen} onClose={() => setIsLinuxArenaOpen(false)} />
+
+      <ResumeModal isOpen={isResumeOpen} onClose={() => setIsResumeOpen(false)} />
 
       <HotspotModal slug={activeModalSlug} onClose={() => setActiveModalSlug(null)} />
     </ReactLenis>

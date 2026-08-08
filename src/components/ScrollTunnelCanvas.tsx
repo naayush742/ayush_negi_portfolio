@@ -13,7 +13,7 @@ import { ExperienceSection } from './ExperienceSection';
 import { EducationSection } from './EducationSection';
 import { ContactSection } from './ContactSection';
 
-// ─── DYNAMIC 3D SPATIAL STATION (DISTANCE FOCAL VISIBILITY & FADING) ───
+// ─── 3D SPATIAL STATION (DISTANCE FOCAL VISIBILITY & FADING) ───
 interface SpatialStationProps {
   id: string;
   pos: THREE.Vector3;
@@ -134,7 +134,7 @@ const SpatialScene: React.FC = () => {
     return new THREE.CatmullRomCurve3(points);
   }, []);
 
-  // 2. Sections 3D Spatial Positions along path (distanceFactor = 18 for close-up sharp cards)
+  // 2. Sections 3D Spatial Positions along path
   const spatialSections = useMemo(() => {
     const sections = [
       { id: 'hero', t: 0.12, distanceFactor: 20, comp: <Hero /> },
@@ -156,7 +156,7 @@ const SpatialScene: React.FC = () => {
     });
   }, [curve]);
 
-  // Frame Loop (Close-up camera Z distance offset: +4.5 units)
+  // Frame Loop (Camera trajectory motion down 3D tunnel depth)
   useFrame(() => {
     scrollProgressRef.current = THREE.MathUtils.lerp(
       scrollProgressRef.current,
@@ -166,7 +166,7 @@ const SpatialScene: React.FC = () => {
 
     const currentT = Math.max(0, Math.min(0.998, scrollProgressRef.current));
 
-    // Get current 3D position on road
+    // Get current 3D position on flight road
     const camPos = curve.getPointAt(currentT);
     const lookAtPos = curve.getPointAt(Math.min(currentT + 0.03, 0.999));
 
@@ -174,7 +174,6 @@ const SpatialScene: React.FC = () => {
     const mouseX = (mouse.x * 2 - camera.position.x) * 0.04;
     const mouseY = (mouse.y * 1.5 - camera.position.y) * 0.04;
 
-    // Camera Z distance offset (+4.5 units for close-up card viewing down the tunnel)
     const startZOffset = Math.max(0, (0.12 - currentT) * 200);
 
     camera.position.x = THREE.MathUtils.lerp(camera.position.x, camPos.x + mouseX, 0.1);
@@ -186,9 +185,9 @@ const SpatialScene: React.FC = () => {
 
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[0, 20, 10]} intensity={1} />
-      <pointLight position={[0, 0, -20]} intensity={2} color={themeColor} />
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[0, 20, 10]} intensity={1.2} />
+      <pointLight position={[0, 0, -20]} intensity={2.5} color={themeColor} />
 
       {/* 3D Spatial Content Stations */}
       {spatialSections.map((sec) => (
