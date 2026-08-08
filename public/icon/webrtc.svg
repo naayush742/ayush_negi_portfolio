@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="webrtc-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF4D9B" />
+      <stop offset="100%" stop-color="#00D4FF" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="#0D1117"/>
+  <circle cx="70" cy="128" r="28" fill="url(#webrtc-grad)" />
+  <circle cx="186" cy="128" r="28" fill="url(#webrtc-grad)" />
+  <circle cx="128" cy="70" r="22" fill="#00D4FF" />
+  <path d="M 70 128 L 128 70 L 186 128" stroke="url(#webrtc-grad)" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 70 128 Q 128 175 186 128" stroke="#FF4D9B" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>

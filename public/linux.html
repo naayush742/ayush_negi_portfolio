@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LINUX TERMINAL LAB — 100 Linux Commands Guide | Ayush Negi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #020804;
+      --panel-bg: rgba(2, 14, 6, 0.92);
+      --green: #00ff88;
+      --green-glow: rgba(0, 255, 136, 0.4);
+      --dark-green: #003b10;
+      --cyan: #00d4ff;
+      --red: #ff3131;
+      --yellow: #ffee00;
+      --text: var(--green);
+      --text-dim: rgba(0, 255, 136, 0.75);
+      --border: rgba(0, 255, 136, 0.3);
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-heading: 'Bebas Neue', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg); color: var(--text); font-family: var(--font-mono);
+      min-height: 100vh; overflow: hidden; position: relative; user-select: none;
+      transition: color 0.4s ease, background-color 0.4s ease;
+    }
+
+    /* MATRIX DIGITAL RAIN CANVAS BACKGROUND */
+    #matrix-canvas {
+      position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.35; pointer-events: none;
+    }
+
+    /* CRT SCANLINE OVERLAY */
+    .crt-overlay {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px; opacity: 0.8;
+    }
+
+    /* MECHANICAL SPLIT-DOOR ENTRANCE TRANSITION */
+    .lab-entrance-gate {
+      position: fixed; inset: 0; z-index: 9999; pointer-events: auto;
+      display: flex; overflow: hidden;
+    }
+    .lab-entrance-gate.open {
+      pointer-events: none;
+    }
+
+    .gate-door-left, .gate-door-right {
+      position: absolute; top: 0; bottom: 0; width: 50%;
+      background: #020804; border-right: 2px solid var(--green);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+      box-shadow: 0 0 40px var(--green-glow); z-index: 2;
+    }
+    .gate-door-left { left: 0; border-right: 1px solid var(--green); }
+    .gate-door-right { right: 0; border-left: 1px solid var(--green); }
+
+    .lab-entrance-gate.open .gate-door-left { transform: translateX(-100%); }
+    .lab-entrance-gate.open .gate-door-right { transform: translateX(100%); }
+
+    .gate-content {
+      position: absolute; inset: 0; z-index: 3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; font-family: var(--font-mono); color: var(--green);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .lab-entrance-gate.open .gate-content {
+      opacity: 0; transform: scale(1.1); pointer-events: none;
+    }
+
+    .laser-scanner {
+      position: absolute; top: 0; bottom: 0; width: 2px;
+      background: var(--green); box-shadow: 0 0 20px var(--green), 0 0 40px var(--cyan);
+      animation: scanBeam 1.5s ease-in-out infinite alternate; z-index: 4;
+      transition: opacity 0.3s ease;
+    }
+    .lab-entrance-gate.open .laser-scanner {
+      display: none !important; opacity: 0 !important; pointer-events: none !important;
+    }
+    @keyframes scanBeam { 0% { left: 10%; } 100% { left: 90%; } }
+
+    /* MAIN CONTAINER */
+    .hacker-container {
+      position: relative; z-index: 10; height: 100vh; width: 100vw;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 16px; gap: 14px;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--panel-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 20px; display: flex;
+      justify-content: space-between; align-items: center;
+      box-shadow: 0 0 25px var(--green-glow); backdrop-filter: blur(10px);
+    }
+    .hacker-logo {
+      font-family: var(--font-heading); font-size: 1.8rem; letter-spacing: 3px;
+      color: #fff; text-shadow: 0 0 12px var(--green); display: flex; align-items: center; gap: 10px;
+    }
+    .hacker-logo span { color: var(--green); }
+
+    .hacker-status {
+      display: flex; gap: 20px; font-size: 0.72rem; color: var(--text-dim);
+    }
+    .status-item span { color: var(--green); font-weight: bold; }
+
+    .exit-btn {
+      background: rgba(255, 49, 49, 0.1); border: 1px solid var(--red);
+      color: var(--red); font-family: var(--font-mono); font-size: 0.75rem;
+      padding: 8px 16px; border-radius: 4px; cursor: pointer; transition: all 0.3s ease;
+      text-decoration: none; font-weight: bold; display: inline-block;
+    }
+    .exit-btn:hover {
+      background: var(--red); color: #000; box-shadow: 0 0 20px var(--red);
+      transform: translateY(-2px);
+    }
+
+    /* CATEGORY TRACK TABS */
+    .cat-track {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch; width: 100%;
+    }
+    .cat-track::-webkit-scrollbar { display: none; }
+
+    .cat-pill {
+      flex: 1; min-width: 140px; max-width: 220px; padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border);
+      border-radius: 4px; cursor: pointer; transition: all 0.3s ease;
+      font-size: 0.68rem; color: var(--text-dim); white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; text-align: center;
+      flex-shrink: 0;
+    }
+    .cat-pill:hover {
+      border-color: var(--cyan); color: var(--cyan); background: rgba(0, 212, 255, 0.08);
+      transform: translateY(-2px); box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+    }
+    .cat-pill.active {
+      background: rgba(0, 255, 136, 0.15); border-color: var(--green);
+      color: var(--green); box-shadow: 0 0 20px var(--green-glow);
+      transform: translateY(-2px); font-weight: bold;
+    }
+
+    /* SEARCH BAR */
+    .search-box {
+      width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--border);
+      border-radius: 4px; padding: 8px 14px; font-family: var(--font-mono);
+      font-size: 0.8rem; color: var(--green); outline: none; margin-bottom: 8px;
+    }
+    .search-box:focus { border-color: var(--cyan); box-shadow: 0 0 15px rgba(0,212,255,0.3); }
+
+    /* CENTER WORKSPACE */
+    .workspace-grid {
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 14px; flex: 1; min-height: 0;
+    }
+
+    /* LEFT: COMMANDS LIST PANEL */
+    .hacker-panel {
+      background: var(--panel-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px; display: flex; flex-direction: column;
+      justify-content: space-between; gap: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+      overflow-y: auto;
+    }
+
+    .cat-title {
+      font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: 2px;
+      color: #fff; text-shadow: 0 0 10px var(--green); margin-bottom: 4px;
+    }
+
+    .cmd-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px; max-height: 400px; overflow-y: auto; padding-right: 4px;
+    }
+
+    .cmd-item-btn {
+      padding: 8px 10px; background: rgba(0, 255, 136, 0.05); border: 1px solid var(--border);
+      border-radius: 4px; color: var(--green); font-family: var(--font-mono);
+      font-size: 0.72rem; text-align: left; cursor: pointer; transition: all 0.2s ease;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .cmd-item-btn:hover {
+      background: var(--green); color: #000; font-weight: bold;
+      box-shadow: 0 0 15px var(--green-glow); transform: translateY(-2px);
+    }
+    .cmd-item-name { font-weight: bold; color: var(--cyan); }
+    .cmd-item-btn:hover .cmd-item-name { color: #000; }
+    .cmd-item-desc { font-size: 0.6rem; color: #a0c4b0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cmd-item-btn:hover .cmd-item-desc { color: #111; }
+
+    /* RIGHT: TERMINAL CLI */
+    .cli-panel {
+      background: #000; border: 1px solid var(--border); border-radius: 6px;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 0 35px var(--green-glow);
+    }
+
+    .cli-header {
+      background: rgba(255, 255, 255, 0.04); padding: 8px 14px; font-size: 0.7rem;
+      color: var(--green); display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cli-console {
+      padding: 16px; font-size: 0.8rem; line-height: 1.5; color: var(--green);
+      flex: 1; overflow-y: auto; white-space: pre-wrap;
+    }
+
+    .cli-form {
+      display: flex; align-items: center; gap: 10px; padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.02); border-top: 1px solid var(--border);
+    }
+    .cli-prompt { color: var(--green); font-weight: bold; font-size: 0.85rem; }
+    .cli-input {
+      background: transparent; border: none; color: var(--green); font-family: var(--font-mono);
+      font-size: 0.9rem; width: 100%; outline: none; text-shadow: 0 0 8px var(--green);
+    }
+
+    @media (max-width: 850px) {
+      .workspace-grid { grid-template-columns: 1fr; }
+      header { flex-direction: column; gap: 8px; }
+      .cat-pill { min-width: 110px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- MATRIX DIGITAL RAIN CANVAS -->
+  <canvas id="matrix-canvas"></canvas>
+
+  <!-- CRT SCANLINES EFFECT -->
+  <div class="crt-overlay"></div>
+
+  <!-- MECHANICAL SPLIT-DOOR ENTRANCE TRANSITION OVERLAY -->
+  <div class="lab-entrance-gate" id="entranceGate">
+    <div class="gate-door-left"></div>
+    <div class="gate-door-right"></div>
+    <div class="laser-scanner"></div>
+    <div class="gate-content">
+      <img src="/icon/linux.png" alt="Linux" style="width: 60px; height: 60px; filter: drop-shadow(0 0 20px var(--green));" />
+      <div style="font-family: var(--font-heading); font-size: 2.5rem; letter-spacing: 4px; text-shadow: 0 0 20px var(--green);">
+        INITIALIZING LINUX TERMINAL LAB...
+      </div>
+      <div style="font-size: 0.75rem; color: var(--cyan); letter-spacing: 2px; font-weight: bold;" id="gateBootPercent">
+        [SYSTEM KERNEL ACCESS GRANTED — 100%]
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="hacker-container">
+
+    <!-- HEADER BAR -->
+    <header>
+      <div class="hacker-logo">
+        <img src="/icon/linux.png" alt="Linux" style="width: 28px; height: 28px; object-fit: contain;" /> LINUX <span>TERMINAL LAB</span>
+      </div>
+
+      <div class="hacker-status">
+        <div class="status-item">DATABASE: <span id="statusText">100 LINUX COMMANDS</span></div>
+        <div class="status-item">MASTERED: <span id="masteredCount">0 / 100</span></div>
+      </div>
+
+      <button class="exit-btn" onclick="exitAcademy()">EXIT LAB ➔</button>
+    </header>
+
+    <!-- CATEGORY TRACK TABS -->
+    <div class="cat-track">
+      <div class="cat-pill active" id="cpill-all" onclick="selectCategory('all')">ALL 100 COMMANDS</div>
+      <div class="cat-pill" id="cpill-files" onclick="selectCategory('files')">📂 FILES & DIRS (24)</div>
+      <div class="cat-pill" id="cpill-perm" onclick="selectCategory('perm')">🔒 PERMISSIONS (12)</div>
+      <div class="cat-pill" id="cpill-sys" onclick="selectCategory('sys')">⚡ PROCESS & SYSTEM (17)</div>
+      <div class="cat-pill" id="cpill-net" onclick="selectCategory('net')">🌐 NETWORKING (14)</div>
+      <div class="cat-pill" id="cpill-pkg" onclick="selectCategory('pkg')">📦 PACKAGES (13)</div>
+      <div class="cat-pill" id="cpill-search" onclick="selectCategory('search')">🗜️ SEARCH & TEXT (20)</div>
+    </div>
+
+    <!-- WORKSPACE GRID -->
+    <div class="workspace-grid">
+
+      <!-- LEFT PANEL: COMMANDS EXPLORER -->
+      <div class="hacker-panel">
+        <div>
+          <input type="text" id="searchInput" class="search-box" placeholder="🔍 Search over 100 Linux commands (e.g. 'ls', 'chmod', 'grep')..." oninput="filterCommands()" />
+          <h2 class="cat-title" id="catTitle">ALL LINUX COMMANDS</h2>
+        </div>
+
+        <div class="cmd-grid" id="cmdGrid">
+          <!-- 100 Command buttons rendered via JS -->
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: HACKER CLI TERMINAL -->
+      <div class="cli-panel">
+        <div class="cli-header">
+          <span>student@cyber-terminal:~# terminal_emulator_100_cmds</span>
+          <span id="pathText">/home/student</span>
+        </div>
+
+        <div class="cli-console" id="console">
+[LINUX TERMINAL LAB — 100 COMMANDS GUIDE]
+Search or click any command on the left to inject into terminal & learn what it does!
+        </div>
+
+        <form class="cli-form" onsubmit="handleCmdSubmit(event)">
+          <span class="cli-prompt">student@cyber-terminal:~$</span>
+          <input type="text" class="cli-input" id="cliInput" autocomplete="off" placeholder="Type Linux command (e.g. 'ls', 'pwd', 'cd')..." />
+          <button type="submit" style="display:none;"></button>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ── 100 BASIC LINUX COMMANDS DATABASE ──
+    const commandsDb = [
+      // FILES & DIRECTORIES (24)
+      { name: 'pwd', cat: 'files', desc: 'Print current working directory', out: '/home/student/workspace' },
+      { name: 'ls', cat: 'files', desc: 'List files and folders', out: 'documents/  downloads/  script.sh  notes.txt' },
+      { name: 'ls -la', cat: 'files', desc: 'List all hidden files and permissions', out: 'drwxr-xr-x 2 student student 4096 .bashrc\n-rw-r--r-- 1 student student  256 notes.txt' },
+      { name: 'cd', cat: 'files', desc: 'Change directory location', out: 'Switched to home directory (/home/student)' },
+      { name: 'cd ..', cat: 'files', desc: 'Move up 1 directory level', out: 'Moved up to parent folder' },
+      { name: 'mkdir', cat: 'files', desc: 'Create new directory folder', out: 'Created directory: new_folder/' },
+      { name: 'rmdir', cat: 'files', desc: 'Remove an empty directory', out: 'Removed directory: new_folder/' },
+      { name: 'touch', cat: 'files', desc: 'Create empty file', out: 'Created blank file: index.txt' },
+      { name: 'cp', cat: 'files', desc: 'Copy file or folder', out: 'Copied file1.txt -> file2.txt' },
+      { name: 'mv', cat: 'files', desc: 'Move or rename file', out: 'Renamed file.txt -> document.txt' },
+      { name: 'rm', cat: 'files', desc: 'Delete a file', out: 'Deleted file: document.txt' },
+      { name: 'rm -rf', cat: 'files', desc: 'Force delete folder recursively', out: 'Deleted folder and all contents' },
+      { name: 'cat', cat: 'files', desc: 'Read file text contents', out: 'Hello World! Welcome to Linux.' },
+      { name: 'head', cat: 'files', desc: 'View first 10 lines of file', out: 'Line 1\nLine 2\nLine 3... (first 10 lines)' },
+      { name: 'tail', cat: 'files', desc: 'View last 10 lines of file', out: 'Line 90\nLine 91... (last 10 lines)' },
+      { name: 'tail -f', cat: 'files', desc: 'Stream live updates of a log file', out: 'Streaming live log updates...' },
+      { name: 'nano', cat: 'files', desc: 'Open easy terminal text editor', out: 'Opened Nano editor' },
+      { name: 'vim', cat: 'files', desc: 'Open advanced terminal editor', out: 'Opened Vim editor' },
+      { name: 'less', cat: 'files', desc: 'View file one page at a time', out: 'Viewing file via less viewer' },
+      { name: 'more', cat: 'files', desc: 'View file with scroll paging', out: 'Viewing file via more viewer' },
+      { name: 'file', cat: 'files', desc: 'Determine file type', out: 'notes.txt: ASCII text document' },
+      { name: 'stat', cat: 'files', desc: 'Show detailed file status', out: 'Size: 1024  Access: 2026-08-08' },
+      { name: 'find', cat: 'files', desc: 'Search for files by name', out: 'Found: ./documents/report.pdf' },
+      { name: 'locate', cat: 'files', desc: 'Quickly find file by database', out: 'Found: /var/log/syslog' },
+
+      // PERMISSIONS & USER (12)
+      { name: 'chmod +x', cat: 'perm', desc: 'Grant execution permission', out: 'Granted execute flags (+x)' },
+      { name: 'chmod 755', cat: 'perm', desc: 'Grant owner full access, others read/exec', out: 'Set permissions to 755 (rwxr-xr-x)' },
+      { name: 'chmod 644', cat: 'perm', desc: 'Grant owner read/write, others read', out: 'Set permissions to 644 (rw-r--r--)' },
+      { name: 'chown', cat: 'perm', desc: 'Change file owner', out: 'Changed file owner -> student' },
+      { name: 'chgrp', cat: 'perm', desc: 'Change group ownership', out: 'Changed group -> devgroup' },
+      { name: 'umask', cat: 'perm', desc: 'Set default permission mask', out: 'Default umask: 0022' },
+      { name: 'sudo', cat: 'perm', desc: 'Run with admin powers', out: 'Executed command with root powers' },
+      { name: 'su', cat: 'perm', desc: 'Switch user to superuser root', out: 'Switched to root superuser' },
+      { name: 'passwd', cat: 'perm', desc: 'Change user account password', out: 'Password updated successfully' },
+      { name: 'whoami', cat: 'perm', desc: 'Print current username', out: 'student' },
+      { name: 'id', cat: 'perm', desc: 'Print user and group IDs', out: 'uid=1000(student) gid=1000(student)' },
+      { name: 'groups', cat: 'perm', desc: 'Show user groups', out: 'student sudo docker' },
+
+      // PROCESSES & SYSTEM (17)
+      { name: 'ps', cat: 'sys', desc: 'List active user processes', out: 'PID TTY TIME CMD\n101 pts/0 bash' },
+      { name: 'ps aux', cat: 'sys', desc: 'List all system processes with CPU', out: 'USER PID %CPU %MEM COMMAND\nroot 1 0.0 0.1 systemd' },
+      { name: 'top', cat: 'sys', desc: 'Monitor live CPU & memory', out: 'Tasks: 120 total, 1 running' },
+      { name: 'htop', cat: 'sys', desc: 'Interactive colorized CPU monitor', out: 'Opened htop monitor' },
+      { name: 'kill', cat: 'sys', desc: 'Terminate process by PID', out: 'Sent SIGTERM to process' },
+      { name: 'kill -9', cat: 'sys', desc: 'Force kill stuck process', out: 'Killed process PID #999' },
+      { name: 'killall', cat: 'sys', desc: 'Kill all processes by name', out: 'Killed all nginx processes' },
+      { name: 'pkill', cat: 'sys', desc: 'Kill process by pattern', out: 'Killed matching process' },
+      { name: 'bg', cat: 'sys', desc: 'Move job to background', out: 'Job moved to background' },
+      { name: 'fg', cat: 'sys', desc: 'Bring job to foreground', out: 'Job brought to foreground' },
+      { name: 'jobs', cat: 'sys', desc: 'List background jobs', out: '[1]+ Running python app.py &' },
+      { name: 'uptime', cat: 'sys', desc: 'Show system running time', out: 'up 14 days, 3 hours, 2 users' },
+      { name: 'free -h', cat: 'sys', desc: 'Show RAM and swap usage', out: 'Mem: 16Gi total, 4.2Gi used, 11.8Gi free' },
+      { name: 'df -h', cat: 'sys', desc: 'Show disk space in GB/MB', out: '/dev/sda1 100G total, 42G used' },
+      { name: 'du -sh', cat: 'sys', desc: 'Show total folder size', out: '1.2G  ./workspace' },
+      { name: 'uname -a', cat: 'sys', desc: 'Show Linux kernel version', out: 'Linux 5.15.0-x86_64 x86_64 GNU/Linux' },
+      { name: 'hostname', cat: 'sys', desc: 'Print system hostname', out: 'ayush-linux-server' },
+
+      // NETWORKING & WEB (14)
+      { name: 'ping', cat: 'net', desc: 'Test network connectivity', out: '64 bytes from 8.8.8.8: time=14ms' },
+      { name: 'curl', cat: 'net', desc: 'Fetch web data or API', out: '{"status": "200 OK", "data": "success"}' },
+      { name: 'wget', cat: 'net', desc: 'Download file from web URL', out: 'Downloaded: file.zip [100%]' },
+      { name: 'ifconfig', cat: 'net', desc: 'Display network interfaces', out: 'eth0: flags=4163<UP,BROADCAST>' },
+      { name: 'ip a', cat: 'net', desc: 'Show active IP addresses', out: '127.0.0.1/8  192.168.1.50/24' },
+      { name: 'netstat -tuln', cat: 'net', desc: 'List listening ports', out: 'tcp 0 0 0.0.0.0:80 LISTEN' },
+      { name: 'ss -tuln', cat: 'net', desc: 'Fast modern socket monitor', out: 'Netid State Recv-Q Send-Q Local:Port' },
+      { name: 'traceroute', cat: 'net', desc: 'Trace route to server', out: '1  192.168.1.1 2ms\n2  10.0.0.1 8ms' },
+      { name: 'dig', cat: 'net', desc: 'DNS domain lookup', out: 'google.com. 300 IN A 142.250.190.46' },
+      { name: 'nslookup', cat: 'net', desc: 'Query DNS name server', out: 'Server: 8.8.8.8 Address: 8.8.8.8#53' },
+      { name: 'ssh', cat: 'net', desc: 'Connect to remote server', out: 'Connected to remote Linux server' },
+      { name: 'scp', cat: 'net', desc: 'Secure copy files over SSH', out: 'Transferred file -> remote_host' },
+      { name: 'rsync', cat: 'net', desc: 'Sync files fast between folders', out: 'sent 1,024 bytes  received 32 bytes' },
+      { name: 'nmap', cat: 'net', desc: 'Scan network open ports', out: 'Port 80/tcp open http' },
+
+      // PACKAGES & SERVICES (13)
+      { name: 'apt update', cat: 'pkg', desc: 'Refresh software repository list', out: 'Reading package lists... Done' },
+      { name: 'apt upgrade', cat: 'pkg', desc: 'Upgrade packages to latest version', out: 'Upgraded 12 packages' },
+      { name: 'apt install', cat: 'pkg', desc: 'Download and install package', out: 'Installed package successfully' },
+      { name: 'apt remove', cat: 'pkg', desc: 'Uninstall software package', out: 'Removed package' },
+      { name: 'apt search', cat: 'pkg', desc: 'Search for software package', out: 'python3/stable 3.10.6-1 amd64' },
+      { name: 'systemctl start', cat: 'pkg', desc: 'Start a system service', out: 'Started nginx service' },
+      { name: 'systemctl stop', cat: 'pkg', desc: 'Stop a running service', out: 'Stopped nginx service' },
+      { name: 'systemctl status', cat: 'pkg', desc: 'Check service status', out: '● nginx.service - Active: active (running)' },
+      { name: 'systemctl restart', cat: 'pkg', desc: 'Restart a system service', out: 'Restarted nginx service' },
+      { name: 'journalctl', cat: 'pkg', desc: 'View system log messages', out: '-- Logs begin at Sat 2026-08-08 --' },
+      { name: 'service', cat: 'pkg', desc: 'Legacy service management', out: 'Service command executed' },
+      { name: 'cron', cat: 'pkg', desc: 'Background task scheduler daemon', out: 'Cron daemon active' },
+      { name: 'crontab -e', cat: 'pkg', desc: 'Edit scheduled cron tasks', out: 'Opened crontab file' },
+
+      // SEARCH & TEXT (20)
+      { name: 'tar -czvf', cat: 'search', desc: 'Compress files into tar.gz', out: 'Created archive.tar.gz' },
+      { name: 'tar -xzvf', cat: 'search', desc: 'Extract tar.gz archive', out: 'Extracted archive.tar.gz' },
+      { name: 'gzip', cat: 'search', desc: 'Compress file to .gz', out: 'Compressed file.txt.gz' },
+      { name: 'gunzip', cat: 'search', desc: 'Decompress .gz file', out: 'Decompressed file.txt' },
+      { name: 'zip', cat: 'search', desc: 'Create zip archive', out: 'Created archive.zip' },
+      { name: 'unzip', cat: 'search', desc: 'Extract zip archive', out: 'Extracted files from archive.zip' },
+      { name: 'grep', cat: 'search', desc: 'Search text pattern in file', out: 'Found 3 matching lines' },
+      { name: 'grep -r', cat: 'search', desc: 'Search text in all subfolders', out: './src/index.js: match found' },
+      { name: 'wc -l', cat: 'search', desc: 'Count total lines in file', out: '142 notes.txt' },
+      { name: 'sort', cat: 'search', desc: 'Sort text lines', out: 'Sorted lines alphabetically' },
+      { name: 'uniq', cat: 'search', desc: 'Filter out duplicate lines', out: 'Removed duplicate lines' },
+      { name: 'cut', cat: 'search', desc: 'Extract specific columns', out: 'Extracted column 1' },
+      { name: 'sed', cat: 'search', desc: 'Stream editor text replace', out: 'Replaced text patterns' },
+      { name: 'awk', cat: 'search', desc: 'Text column processor', out: 'Processed data columns' },
+      { name: 'echo', cat: 'search', desc: 'Print text or variable value', out: 'Hello Linux Student!' },
+      { name: 'alias', cat: 'search', desc: 'Create shortcut command', out: 'alias ll="ls -la"' },
+      { name: 'env', cat: 'search', desc: 'Print environment variables', out: 'PATH=/usr/local/bin:/usr/bin' },
+      { name: 'export', cat: 'search', desc: 'Set environment variable', out: 'Set MY_VAR=100' },
+      { name: 'which', cat: 'search', desc: 'Locate command binary path', out: '/usr/bin/python3' },
+      { name: 'man', cat: 'search', desc: 'Display command manual page', out: 'Opened manual page for command' }
+    ];
+
+    let currentCat = 'all';
+    let masteredSet = new Set();
+
+    function renderCommands() {
+      const grid = document.getElementById('cmdGrid');
+      const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+      grid.innerHTML = '';
+
+      const filtered = commandsDb.filter(c => {
+        const matchesCat = (currentCat === 'all' || c.cat === currentCat);
+        const matchesSearch = (!searchVal || c.name.toLowerCase().includes(searchVal) || c.desc.toLowerCase().includes(searchVal));
+        return matchesCat && matchesSearch;
+      });
+
+      filtered.forEach(c => {
+        const btn = document.createElement('button');
+        btn.className = 'cmd-item-btn';
+        btn.onclick = () => runCommand(c);
+        btn.innerHTML = `
+          <span class="cmd-item-name">${c.name}</span>
+          <span class="cmd-item-desc">${c.desc}</span>
+        `;
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectCategory(cat) {
+      currentCat = cat;
+      const pills = ['all', 'files', 'perm', 'sys', 'net', 'pkg', 'search'];
+      pills.forEach(p => {
+        const el = document.getElementById(`cpill-${p}`);
+        if (el) {
+          if (p === cat) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      });
+      renderCommands();
+    }
+
+    function filterCommands() {
+      renderCommands();
+    }
+
+    function runCommand(cmdObj) {
+      const consoleEl = document.getElementById('console');
+      const inputEl = document.getElementById('cliInput');
+
+      consoleEl.innerText += `\nstudent@cyber-terminal:~$ ${cmdObj.name}\n`;
+      consoleEl.innerText += `💡 [EXPLANATION]: ${cmdObj.desc}\n`;
+      consoleEl.innerText += `[OUTPUT]: ${cmdObj.out}\n`;
+
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+      inputEl.value = '';
+
+      masteredSet.add(cmdObj.name);
+      document.getElementById('masteredCount').innerText = `${masteredSet.size} / 100`;
+    }
+
+    function handleCmdSubmit(e) {
+      e.preventDefault();
+      const val = document.getElementById('cliInput').value.trim();
+      if (!val) return;
+
+      const found = commandsDb.find(c => c.name.toLowerCase() === val.toLowerCase());
+      if (found) {
+        runCommand(found);
+      } else {
+        const consoleEl = document.getElementById('console');
+        consoleEl.innerText += `\nstudent@cyber-terminal:~$ ${val}\n`;
+        consoleEl.innerText += `[OUTPUT]: Executed command '${val}' cleanly.\n`;
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+        document.getElementById('cliInput').value = '';
+      }
+    }
+
+    function exitAcademy() {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage('close-linux-modal', '*');
+      } else {
+        window.location.href = '/';
+      }
+    }
+
+    // ── DYNAMIC AURA THEME SYNCHRONIZATION ──
+    const auraThemes = {
+      azure: { main: '#00d4ff', secondary: '#00ff88', glow: 'rgba(0, 212, 255, 0.4)', bg: '#020b14' },
+      green: { main: '#00ff88', secondary: '#00d4ff', glow: 'rgba(0, 255, 136, 0.4)', bg: '#020804' },
+      red: { main: '#ff3131', secondary: '#ff6b2b', glow: 'rgba(255, 49, 49, 0.4)', bg: '#140204' },
+      orange: { main: '#ff6b2b', secondary: '#ffb84d', glow: 'rgba(255, 107, 43, 0.4)', bg: '#140802' },
+      purple: { main: '#9b59ff', secondary: '#ff4d9b', glow: 'rgba(155, 89, 255, 0.4)', bg: '#0b0214' }
+    };
+
+    function applyActiveAuraTheme() {
+      const activeThemeKey = sessionStorage.getItem('uscs-aura-theme') || 'azure';
+      const sel = auraThemes[activeThemeKey] || auraThemes.azure;
+      const root = document.documentElement;
+
+      root.style.setProperty('--green', sel.main);
+      root.style.setProperty('--cyan', sel.secondary);
+      root.style.setProperty('--green-glow', sel.glow);
+      root.style.setProperty('--bg', sel.bg);
+      root.style.setProperty('--border', `${sel.main}4d`);
+    }
+
+    applyActiveAuraTheme();
+    window.addEventListener('storage', applyActiveAuraTheme);
+
+    // MATRIX RAIN
+    const matrixCanvas = document.getElementById('matrix-canvas');
+    const ctx = matrixCanvas.getContext('2d');
+
+    function resizeMatrix() {
+      matrixCanvas.width = window.innerWidth;
+      matrixCanvas.height = window.innerHeight;
+    }
+    resizeMatrix();
+    window.addEventListener('resize', resizeMatrix);
+
+    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ';
+    const fontSize = 14;
+    const columns = Math.floor(matrixCanvas.width / fontSize);
+    const drops = Array(columns).fill(1);
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(2, 8, 4, 0.08)';
+      ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+      const activeColor = getComputedStyle(document.documentElement).getPropertyValue('--green').trim() || '#00ff88';
+      ctx.fillStyle = activeColor;
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+      requestAnimationFrame(drawMatrix);
+    }
+    drawMatrix();
+
+    // FORWARD MOUSE MOVE
+    window.addEventListener('mousemove', (e) => {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'mousemove', x: e.clientX, y: e.clientY }, '*');
+      }
+    });
+
+    // INITIAL RENDER & ENTRANCE TRANSITION TRIGGER
+    renderCommands();
+    setTimeout(() => {
+      const gate = document.getElementById('entranceGate');
+      if (gate) gate.classList.add('open');
+    }, 400);
+  </script>
+</body>
+</html>

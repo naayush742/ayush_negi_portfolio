@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="jspdf-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E61D24" />
+      <stop offset="100%" stop-color="#FF5252" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="#0D1117"/>
+  <path d="M64 48 C64 40, 72 32, 80 32 L144 32 L192 80 L192 208 C192 216, 184 224, 176 224 L80 224 C72 224, 64 216, 64 208 Z" fill="url(#jspdf-grad)"/>
+  <path d="M144 32 L144 80 L192 80" fill="#B71C1C"/>
+  <text x="128" y="160" font-family="monospace" font-size="38" font-weight="bold" fill="#FFFFFF" text-anchor="middle">jsPDF</text>
+</svg>
