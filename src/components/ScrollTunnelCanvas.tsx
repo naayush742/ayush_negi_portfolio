@@ -12,7 +12,6 @@ import { ProjectsSection } from './ProjectsSection';
 import { ExperienceSection } from './ExperienceSection';
 import { EducationSection } from './EducationSection';
 import { ContactSection } from './ContactSection';
-import { Footer } from './Footer';
 
 // ─── DYNAMIC 3D SPATIAL STATION (DISTANCE FOCAL VISIBILITY & FADING) ───
 interface SpatialStationProps {
@@ -146,7 +145,6 @@ const SpatialScene: React.FC = () => {
       { id: 'experience', t: 0.76, distanceFactor: 18, comp: <ExperienceSection /> },
       { id: 'education', t: 0.86, distanceFactor: 18, comp: <EducationSection /> },
       { id: 'contact', t: 0.94, distanceFactor: 18, comp: <ContactSection /> },
-      { id: 'footer', t: 0.99, distanceFactor: 18, comp: <Footer /> },
     ];
 
     return sections.map((sec) => {

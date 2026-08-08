@@ -4,7 +4,6 @@ import { CustomCursor } from './components/CustomCursor';
 import { ScrollProgress } from './components/ScrollProgress';
 import { ParticleCanvas } from './components/ParticleCanvas';
 import { ScrollTunnelCanvas } from './components/ScrollTunnelCanvas';
-import { Navbar } from './components/Navbar';
 import { Ticker } from './components/Ticker';
 import { AuraControl } from './components/AuraControl';
 import { SystemLog } from './components/SystemLog';
@@ -224,7 +223,6 @@ export const App: React.FC = () => {
       <ParticleCanvas />
       <ScrollTunnelCanvas />
 
-      <Navbar />
       <Ticker />
 
       <main style={{ minHeight: '850vh', position: 'relative', pointerEvents: 'none' }}>
