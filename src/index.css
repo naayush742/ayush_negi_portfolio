@@ -45,7 +45,7 @@
 
 html {
   scroll-padding-top: 100px;
-  font-size: 100%;
+  font-size: 112.5%;
 }
 
 html.lenis,
@@ -78,6 +78,7 @@ body {
   background-attachment: fixed;
   color: var(--text);
   font-family: var(--font-body);
+  font-size: 1.05rem;
   overflow-x: hidden;
   line-height: 1.6;
   animation: techBgPulse 15s ease-in-out infinite alternate;
@@ -817,7 +818,7 @@ body::after {
 }
 
 .hero-sub {
-  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+  font-size: clamp(1.05rem, 2.5vw, 1.25rem);
   color: var(--text);
   max-width: 580px;
   margin: 0 auto 36px;
@@ -834,7 +835,7 @@ body::after {
 }
 .btn-primary {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   letter-spacing: 3px;
   text-transform: uppercase;
   padding: 15px 32px;
@@ -858,7 +859,7 @@ body::after {
 
 .btn-secondary {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   letter-spacing: 3px;
   text-transform: uppercase;
   padding: 14px 32px;
@@ -1016,7 +1017,7 @@ body::after {
   background-clip: text;
 }
 .s-body {
-  font-size: clamp(0.9rem, 2vw, 1.05rem) !important;
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem) !important;
   color: var(--text2);
   max-width: 560px;
   line-height: 1.8 !important;
@@ -1078,7 +1079,7 @@ body::after {
 }
 .period-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.74rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text);
@@ -1112,7 +1113,7 @@ body::after {
 }
 .period-tag {
   font-family: var(--font-mono);
-  font-size: 0.52rem;
+  font-size: 0.66rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--cyan);
@@ -1139,14 +1140,14 @@ body::after {
 }
 .src-body strong {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.82rem;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--cyan);
   display: block;
 }
 .src-body span {
-  font-size: 0.83rem;
+  font-size: 0.98rem;
   color: var(--text2);
   line-height: 1.6;
 }
@@ -1195,13 +1196,13 @@ body::after {
 }
 .fp-t strong {
   display: block;
-  font-size: 0.88rem;
+  font-size: 1.02rem;
   color: var(--text);
   font-weight: 500;
   margin-bottom: 2px;
 }
 .fp-t span {
-  font-size: 0.8rem;
+  font-size: 0.92rem;
   color: var(--text2);
   font-weight: 300;
 }
@@ -1276,7 +1277,7 @@ body::after {
 }
 .cluster-title {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: var(--text2);
   letter-spacing: 1px;
   margin-bottom: 8px;
@@ -1296,7 +1297,7 @@ body::after {
   padding: 5px 9px;
   border-radius: 4px;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   cursor: default;
   transition: all 0.25s ease;
   display: inline-flex;
@@ -1342,7 +1343,7 @@ body::after {
   opacity: 0.4;
 }
 .meta-title {
-  font-size: 0.6rem;
+  font-size: 0.74rem;
   color: var(--text);
   letter-spacing: 1.5px;
   margin-left: 4px;
@@ -1354,7 +1355,7 @@ body::after {
   gap: 12px;
 }
 .meta-line {
-  font-size: 0.64rem;
+  font-size: 0.78rem;
   letter-spacing: 0.5px;
 }
 .m-lbl {
@@ -1522,14 +1523,14 @@ body::after {
   margin-bottom: 4px;
 }
 .tc-b-desc {
-  font-size: 0.6rem;
+  font-size: 0.75rem;
   color: var(--text2);
   line-height: 1.3;
   margin-bottom: 8px;
 }
 .tc-b-link {
   font-family: var(--font-mono);
-  font-size: 0.52rem;
+  font-size: 0.62rem;
   letter-spacing: 1px;
   color: #fff;
   border-bottom: 1px solid var(--tc-c, var(--green));
@@ -1561,13 +1562,13 @@ body::after {
 }
 .tc-name {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.74rem;
   color: var(--text);
   letter-spacing: 0.5px;
   display: block;
 }
 .tc-type {
-  font-size: 0.5rem;
+  font-size: 0.64rem;
   color: var(--text2);
   font-family: var(--font-mono);
   letter-spacing: 0.5px;
@@ -1664,7 +1665,7 @@ body::after {
 }
 .pc-subtitle {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   color: var(--card-accent, var(--cyan));
   display: block;
   margin-top: 2px;
@@ -1673,7 +1674,7 @@ body::after {
 
 .pc-badge {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.74rem;
   padding: 3px 8px;
   border-radius: 4px;
   font-weight: 600;
@@ -1701,7 +1702,7 @@ body::after {
 }
 
 .pc-desc {
-  font-size: 0.83rem;
+  font-size: 0.98rem;
   color: var(--text2);
   line-height: 1.6;
   margin: 0;
@@ -1716,7 +1717,7 @@ body::after {
 }
 .pc-hl-label {
   font-family: var(--font-mono);
-  font-size: 0.6rem;
+  font-size: 0.74rem;
   color: var(--card-accent, var(--cyan));
   letter-spacing: 1px;
   display: block;
@@ -1729,7 +1730,7 @@ body::after {
   margin: 0;
 }
 .pc-hl-list li {
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   color: var(--text);
   line-height: 1.5;
   position: relative;
@@ -1741,7 +1742,7 @@ body::after {
   position: absolute;
   left: 0;
   color: var(--card-accent, var(--cyan));
-  font-size: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .pc-tech-stack {
@@ -1751,7 +1752,7 @@ body::after {
 }
 .pc-tech-pill {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: #fff;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -1848,7 +1849,7 @@ body::after {
   margin-bottom: 4px;
 }
 .tl-desc {
-  font-size: 14px !important;
+  font-size: 1.02rem !important;
   color: var(--text2);
   line-height: 1.6 !important;
 }
@@ -1884,7 +1885,7 @@ body::after {
 }
 .f-lbl {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text2);
@@ -1895,7 +1896,7 @@ body::after {
   color: var(--text);
   padding: 12px 14px;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 1.1rem;
   outline: none;
   transition: all 0.25s;
   width: 100%;
@@ -1917,7 +1918,7 @@ select.f-ctrl {
   border: 1px solid rgba(0, 212, 255, 0.25) !important;
   padding: 12px 14px;
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 1.1rem;
   cursor: pointer;
 }
 select.f-ctrl option {
@@ -1929,7 +1930,7 @@ select.f-ctrl option {
 .f-submit {
   width: 100%;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   letter-spacing: 3px;
   text-transform: uppercase;
   padding: 16px;
@@ -1953,7 +1954,7 @@ select.f-ctrl option {
   background: rgba(0, 255, 136, 0.05);
   border: 1px solid rgba(0, 255, 136, 0.2);
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   color: var(--green);
   letter-spacing: 1.5px;
   text-align: center;
@@ -1987,7 +1988,7 @@ footer {
   color: var(--green);
 }
 .footer-brand p {
-  font-size: 14px !important;
+  font-size: 1rem !important;
   color: var(--text2);
   line-height: 1.6 !important;
   max-width: 280px;
@@ -2007,7 +2008,7 @@ footer {
   gap: 8px;
 }
 .f-lnks a {
-  font-size: 13.5px !important;
+  font-size: 1rem !important;
   color: var(--text2);
   text-decoration: none;
   transition:
@@ -2588,7 +2589,7 @@ footer {
   word-break: break-word;
 }
 .info-text {
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   color: var(--text2);
   line-height: 1.5;
   font-weight: 300;
@@ -2710,7 +2711,7 @@ body.crt-off::after {
    ========================================================= */
 @media (max-width: 768px) {
   html {
-    font-size: 95%;
+    font-size: 102%;
   }
 
   .hero {
@@ -3024,7 +3025,7 @@ body.crt-off::after {
 
 .orbit-badge {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text);

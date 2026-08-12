@@ -64,7 +64,7 @@ export const SkillsSection: React.FC = () => {
 
             <div className="tc-back">
               <div className="tc-b-title">{t.name}</div>
-              <div className="tc-b-desc" style={{ color: 'var(--text2)', fontSize: '0.65rem' }}>
+              <div className="tc-b-desc" style={{ color: 'var(--text2)', fontSize: '0.78rem' }}>
                 {t.type.toUpperCase()} COMPETENCY
               </div>
             </div>

@@ -91,7 +91,7 @@ export const SectionReaderModal: React.FC<SectionReaderModalProps> = ({ sectionS
           className="s-reader-title"
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.85rem',
+            fontSize: '0.98rem',
             color: 'var(--green)',
             letterSpacing: '1.5px',
             fontWeight: 600,
@@ -105,7 +105,7 @@ export const SectionReaderModal: React.FC<SectionReaderModalProps> = ({ sectionS
           className="s-reader-close-btn"
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.72rem',
+            fontSize: '0.84rem',
             color: 'var(--cyan)',
             background: 'rgba(0, 212, 255, 0.12)',
             border: '1px solid var(--cyan)',

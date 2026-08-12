@@ -253,7 +253,7 @@ const ConstellationScene: React.FC<{
               <div
                 style={{
                   fontFamily: 'var(--font-mono, monospace)',
-                  fontSize: node.type === 'PROJECT' ? '12px' : '10px',
+                  fontSize: node.type === 'PROJECT' ? '14px' : '12px',
                   fontWeight: 700,
                   color: isSelected ? '#00ff88' : '#ffffff',
                   background: isSelected ? 'rgba(0, 255, 136, 0.2)' : 'rgba(2, 6, 16, 0.85)',
@@ -265,7 +265,7 @@ const ConstellationScene: React.FC<{
                   boxShadow: isSelected ? '0 0 15px #00ff88' : 'none',
                 }}
               >
-                <span style={{ fontSize: '9px', opacity: 0.7, marginRight: '4px' }}>
+                <span style={{ fontSize: '11px', opacity: 0.7, marginRight: '4px' }}>
                   [{node.type}]
                 </span>
                 {node.title}
@@ -324,7 +324,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
           <span style={{ fontSize: '20px' }}>🛰️</span>
           <span
             style={{
-              fontSize: '13px',
+              fontSize: '15px',
               fontWeight: 700,
               letterSpacing: '1.5px',
               color: 'var(--aura-color, #00d4ff)',
@@ -335,7 +335,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <span style={{ fontSize: '11px', color: 'var(--text2, #888)' }}>
+          <span style={{ fontSize: '13px', color: 'var(--text2, #888)' }}>
             [ CLICK & DRAG TO ROTATE 3D STAR MAP ]
           </span>
           <button
@@ -350,7 +350,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
               background: 'rgba(255, 85, 85, 0.15)',
               border: '1px solid #ff5555',
               color: '#ff5555',
-              fontSize: '11px',
+              fontSize: '13px',
               fontWeight: 700,
               cursor: 'pointer',
             }}
@@ -402,7 +402,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
               <div>
                 <span
                   style={{
-                    fontSize: '10px',
+                    fontSize: '12px',
                     color: selectedNode.color,
                     fontWeight: 700,
                     letterSpacing: '1px',
@@ -410,7 +410,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
                 >
                   [{selectedNode.type}_NODE]
                 </span>
-                <h3 style={{ margin: '4px 0 0 0', fontSize: '16px', color: '#ffffff' }}>
+                <h3 style={{ margin: '4px 0 0 0', fontSize: '18px', color: '#ffffff' }}>
                   {selectedNode.title}
                 </h3>
               </div>
@@ -420,7 +420,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
                   background: 'none',
                   border: 'none',
                   color: '#888',
-                  fontSize: '14px',
+                  fontSize: '16px',
                   cursor: 'pointer',
                 }}
               >
@@ -430,7 +430,7 @@ export const ConstellationModal: React.FC<{ isOpen: boolean; onClose: () => void
             <p
               style={{
                 margin: 0,
-                fontSize: '12px',
+                fontSize: '14px',
                 color: 'rgba(255,255,255,0.75)',
                 lineHeight: '1.5',
               }}

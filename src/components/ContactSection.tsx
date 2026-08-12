@@ -81,7 +81,8 @@ export const ContactSection: React.FC = () => {
           GET IN <span className="hl">TOUCH</span>
         </h2>
         <p className="s-body" style={{ margin: '0 auto' }}>
-          Have a cloud infrastructure project, WebRTC integration, mobile synchronization system, or engineering inquiry? Send a message directly.
+          Have a cloud infrastructure project, WebRTC integration, mobile synchronization system, or
+          engineering inquiry? Send a message directly.
         </p>
 
         <form className="contact-form" onSubmit={handleSubmit} noValidate>
@@ -172,7 +173,8 @@ export const ContactSection: React.FC = () => {
 
           {submitted && (
             <div className="f-ok" style={{ marginTop: '16px' }}>
-              ✓ TELEMETRY RECEIVED: Thank you! Your transmission has been successfully sent to Ayush Negi.
+              ✓ TELEMETRY RECEIVED: Thank you! Your transmission has been successfully sent to Ayush
+              Negi.
             </div>
           )}
 
@@ -186,7 +188,7 @@ export const ContactSection: React.FC = () => {
                 border: '1px solid rgba(255, 49, 49, 0.3)',
                 color: '#ff4d4d',
                 fontFamily: 'var(--font-mono, monospace)',
-                fontSize: '0.8rem',
+                fontSize: '0.92rem',
               }}
             >
               ⚠ TRANSMISSION ERROR: {errorMsg}
@@ -197,5 +199,3 @@ export const ContactSection: React.FC = () => {
     </section>
   );
 };
-
-

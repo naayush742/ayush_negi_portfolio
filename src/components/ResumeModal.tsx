@@ -79,7 +79,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             <span style={{ fontSize: '18px' }}>📄</span>
             <span
               style={{
-                fontSize: '13px',
+                fontSize: '15px',
                 fontWeight: 700,
                 letterSpacing: '1.5px',
                 color: 'var(--aura-color, #00d4ff)',
@@ -89,7 +89,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
             </span>
             <span
               style={{
-                fontSize: '10px',
+                fontSize: '12px',
                 padding: '2px 8px',
                 borderRadius: '10px',
                 background: 'rgba(0, 255, 136, 0.15)',
@@ -117,7 +117,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                 background: 'rgba(0, 255, 136, 0.12)',
                 border: '1px solid #00ff88',
                 color: '#00ff88',
-                fontSize: '11px',
+                fontSize: '13px',
                 fontWeight: 600,
                 textDecoration: 'none',
                 cursor: 'pointer',
@@ -141,7 +141,7 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
                 background: 'rgba(0, 212, 255, 0.12)',
                 border: '1px solid var(--aura-color, #00d4ff)',
                 color: 'var(--aura-color, #00d4ff)',
-                fontSize: '11px',
+                fontSize: '13px',
                 fontWeight: 600,
                 textDecoration: 'none',
                 cursor: 'pointer',

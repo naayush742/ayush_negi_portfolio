@@ -30,7 +30,7 @@ export const BootOverlay: React.FC = () => {
       'NET: ESTABLISHING WEBRTC PEER CONNECTIONS...',
       'DB: INITIALIZING OFFLINE SQLITE QUEUE ENGINE...',
       'AWS: CONNECTING TO SERVERLESS MICROSERVICES...',
-      'SYS: AYUSH_NEGI_OS V3.0 READY — NOMINAL'
+      'SYS: AYUSH_NEGI_OS V3.0 READY — NOMINAL',
     ];
 
     let currentStep = 0;
@@ -70,7 +70,10 @@ export const BootOverlay: React.FC = () => {
   if (isBooted) return null;
 
   return (
-    <div id="boot-overlay" className={`${isBooted ? 'booted' : ''} ${isGateOpening ? 'booting-out' : ''}`}>
+    <div
+      id="boot-overlay"
+      className={`${isBooted ? 'booted' : ''} ${isGateOpening ? 'booting-out' : ''}`}
+    >
       <div className="boot-gate gate-left" />
       <div className="boot-gate gate-right" />
       <div className="boot-container">
@@ -85,7 +88,7 @@ export const BootOverlay: React.FC = () => {
 
         <div className="boot-brand">
           <pre className="boot-ascii">
-{` █████╗ ██╗   ██╗██╗   ██╗███████╗██╗  ██╗    
+            {` █████╗ ██╗   ██╗██╗   ██╗███████╗██╗  ██╗    
 ██╔══██╗╚██╗ ██╔╝██║   ██║██╔════╝██║  ██║    
 ███████║ ╚████╔╝ ██║   ██║███████╗███████║    
 ██╔══██║  ╚██╔╝  ██║   ██║╚════██║██╔══██║    
@@ -125,7 +128,11 @@ export const BootOverlay: React.FC = () => {
             </div>
 
             <div style={{ textAlign: 'center', marginTop: '4px' }}>
-              <button id="boot-skip-btn" onClick={handleSkip} style={{ padding: '6px 14px', fontSize: '0.65rem' }}>
+              <button
+                id="boot-skip-btn"
+                onClick={handleSkip}
+                style={{ padding: '6px 14px', fontSize: '0.78rem' }}
+              >
                 [ SKIP TO MAIN SITE ➔ ]
               </button>
             </div>
