@@ -12,6 +12,7 @@ import { Linux3DArenaModal } from './components/Linux3DArenaModal';
 import { HotspotModal } from './components/HotspotModal';
 import { SideNav } from './components/SideNav';
 import { TechHudOverlay } from './components/TechHudOverlay';
+import { smoothScrollToSection } from './utils/navigation';
 import { soundFx } from './utils/audioEffects';
 
 const LenisSmoothAnchorHandler: React.FC = () => {
@@ -23,15 +24,9 @@ const LenisSmoothAnchorHandler: React.FC = () => {
       if (!target) return;
       const href = target.getAttribute('href');
       if (href && href.startsWith('#') && href.length > 1) {
-        const targetElement = document.querySelector(href);
-        if (targetElement) {
-          e.preventDefault();
-          lenis?.scrollTo(targetElement as HTMLElement, {
-            offset: -80,
-            duration: 1.4,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          });
-        }
+        e.preventDefault();
+        const sectionKey = href.substring(1);
+        smoothScrollToSection(sectionKey, lenis);
       }
     };
 
@@ -66,6 +61,12 @@ export const App: React.FC = () => {
       ) as HTMLElement | null;
 
       if (!tiltable) return;
+      if (
+        tiltable.closest('.project-card-centered-overlay') ||
+        tiltable.classList.contains('is-centered-zoomed-card')
+      ) {
+        return;
+      }
 
       const rect = tiltable.getBoundingClientRect();
       const x = e.clientX - rect.left;

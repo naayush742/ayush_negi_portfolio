@@ -1,8 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useLenis } from '@lenis/react';
+import { smoothScrollToSection } from '../utils/navigation';
+import { soundFx } from '../utils/audioEffects';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [activeSectionId, setActiveSectionId] = useState<string>('home');
+
+  const lenis = useLenis();
+
+  // Track scroll position for navbar styling & active link indicator
+  useLenis(({ progress, scroll }) => {
+    setScrolled(scroll > 40);
+
+    if (progress < 0.24) setActiveSectionId('home');
+    else if (progress < 0.43) setActiveSectionId('about');
+    else if (progress < 0.57) setActiveSectionId('tech');
+    else if (progress < 0.7) setActiveSectionId('materials');
+    else if (progress < 0.81) setActiveSectionId('experience');
+    else if (progress < 0.9) setActiveSectionId('education');
+    else setActiveSectionId('contact');
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,27 +35,50 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavClick = (e: React.MouseEvent, sectionKey: string) => {
+    e.preventDefault();
+    soundFx.playHudClick();
+    setMobileMenuOpen(false);
+    smoothScrollToSection(sectionKey, lenis);
+  };
+
+  const navItems = [
+    { id: 'home', label: '01 // HOME', href: '#home' },
+    { id: 'about', label: '02 // ABOUT', href: '#about' },
+    { id: 'tech', label: '03 // SKILLS', href: '#tech' },
+    { id: 'materials', label: '04 // PROJECTS', href: '#materials' },
+    { id: 'experience', label: '05 // EXPERIENCE', href: '#experience' },
+    { id: 'education', label: '06 // EDUCATION', href: '#education' },
+    { id: 'contact', label: '07 // CONTACT', href: '#contact' },
+  ];
+
   return (
     <>
       <nav id="navbar" className={scrolled ? 'scrolled' : ''}>
-        <a href="#home" className="nav-logo">
+        <a href="#home" className="nav-logo" onClick={(e) => handleNavClick(e, 'home')}>
           AYUSH<span className="accent">.NEGI</span>
         </a>
 
         <div className="nav-links">
-          <a href="#home">01 // HOME</a>
-          <a href="#about">02 // ABOUT</a>
-          <a href="#tech">03 // SKILLS</a>
-          <a href="#materials">04 // PROJECTS</a>
-          <a href="#experience">05 // EXPERIENCE</a>
-          <a href="#education">06 // EDUCATION</a>
-          <a href="#contact">07 // CONTACT</a>
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={item.href}
+              className={activeSectionId === item.id ? 'active' : ''}
+              onClick={(e) => handleNavClick(e, item.id)}
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
 
         <button
           id="menu-toggle"
           className={mobileMenuOpen ? 'active' : ''}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => {
+            soundFx.playHudClick();
+            setMobileMenuOpen(!mobileMenuOpen);
+          }}
           aria-label="Toggle Navigation Menu"
         >
           <span></span>
@@ -47,13 +89,16 @@ export const Navbar: React.FC = () => {
 
       <div id="mobile-menu" className={mobileMenuOpen ? 'active' : ''}>
         <div className="mm-content">
-          <a href="#home" onClick={() => setMobileMenuOpen(false)}>01 // HOME</a>
-          <a href="#about" onClick={() => setMobileMenuOpen(false)}>02 // ABOUT</a>
-          <a href="#tech" onClick={() => setMobileMenuOpen(false)}>03 // SKILLS</a>
-          <a href="#materials" onClick={() => setMobileMenuOpen(false)}>04 // PROJECTS</a>
-          <a href="#experience" onClick={() => setMobileMenuOpen(false)}>05 // EXPERIENCE</a>
-          <a href="#education" onClick={() => setMobileMenuOpen(false)}>06 // EDUCATION</a>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>07 // CONTACT</a>
+          {navItems.map((item) => (
+            <a
+              key={item.id}
+              href={item.href}
+              className={activeSectionId === item.id ? 'active' : ''}
+              onClick={(e) => handleNavClick(e, item.id)}
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
       </div>
     </>

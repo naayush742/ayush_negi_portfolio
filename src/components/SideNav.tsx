@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useLenis } from '@lenis/react';
+import { smoothScrollToSection } from '../utils/navigation';
 import { soundFx } from '../utils/audioEffects';
 
 interface NavSection {
@@ -48,17 +49,8 @@ export const SideNav: React.FC = () => {
 
   const handleSectionClick = (e: React.MouseEvent, section: NavSection) => {
     e.preventDefault();
-    soundFx.playClick();
-    const el = document.querySelector(section.href);
-    if (el && lenis) {
-      lenis.scrollTo(el as HTMLElement, {
-        offset: -80,
-        duration: 1.4,
-        easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-    } else if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    soundFx.playHudClick();
+    smoothScrollToSection(section.id, lenis);
   };
 
   return (
