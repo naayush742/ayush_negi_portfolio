@@ -14,6 +14,7 @@ import { SideNav } from './components/SideNav';
 import { TechHudOverlay } from './components/TechHudOverlay';
 import { smoothScrollToSection } from './utils/navigation';
 import { soundFx } from './utils/audioEffects';
+import { trackSectionView, trackEvent } from './utils/analytics';
 
 const LenisSmoothAnchorHandler: React.FC = () => {
   const lenis = useLenis();
@@ -26,6 +27,7 @@ const LenisSmoothAnchorHandler: React.FC = () => {
       if (href && href.startsWith('#') && href.length > 1) {
         e.preventDefault();
         const sectionKey = href.substring(1);
+        trackSectionView(sectionKey);
         smoothScrollToSection(sectionKey, lenis);
       }
     };
@@ -320,9 +322,18 @@ export const App: React.FC = () => {
       <ScrollProgress />
       <TechHudOverlay
         currentAura={auraTheme}
-        onSelectAura={(t) => setAuraTheme(t)}
-        onOpenTerminal={() => setIsTerminalOpen(true)}
-        onOpenLinuxArena={() => setIsLinuxArenaOpen(true)}
+        onSelectAura={(t) => {
+          setAuraTheme(t);
+          trackEvent('select_aura_theme', { theme: t });
+        }}
+        onOpenTerminal={() => {
+          trackEvent('open_terminal');
+          setIsTerminalOpen(true);
+        }}
+        onOpenLinuxArena={() => {
+          trackEvent('open_linux_arena');
+          setIsLinuxArenaOpen(true);
+        }}
         onOpenResume={() => setIsResumeOpen(true)}
       />
       <SideNav />

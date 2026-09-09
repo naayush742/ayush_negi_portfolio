@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { soundFx } from '../utils/audioEffects';
+import { trackResumeDownload, trackResumeView } from '../utils/analytics';
 
 interface ResumeModalProps {
   isOpen: boolean;
@@ -7,6 +8,12 @@ interface ResumeModalProps {
 }
 
 export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => {
+  useEffect(() => {
+    if (isOpen) {
+      trackResumeView('modal');
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -107,7 +114,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               href={pdfUrl}
               download="Ayush_Negi_Resume.pdf"
               className="hud-action-btn"
-              onClick={() => soundFx.playClick()}
+              onClick={() => {
+                soundFx.playClick();
+                trackResumeDownload();
+              }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -131,7 +141,10 @@ export const ResumeModal: React.FC<ResumeModalProps> = ({ isOpen, onClose }) => 
               target="_blank"
               rel="noopener noreferrer"
               className="hud-action-btn"
-              onClick={() => soundFx.playClick()}
+              onClick={() => {
+                soundFx.playClick();
+                trackResumeView('new_tab');
+              }}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',

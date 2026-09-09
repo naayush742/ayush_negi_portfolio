@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { projectsData, Project } from '../data/projects';
 import { soundFx } from '../utils/audioEffects';
+import { trackProjectInteraction } from '../utils/analytics';
 
 export const ProjectsSection: React.FC = () => {
   const [focusedProjectId, setFocusedProjectId] = useState<string | null>(null);
@@ -14,6 +15,7 @@ export const ProjectsSection: React.FC = () => {
       if (proj) {
         setActiveModalProject(proj);
         setIsClosing(false);
+        trackProjectInteraction(proj.name, 'view_modal');
       }
     } else if (activeModalProject && !isClosing) {
       setIsClosing(true);
@@ -289,7 +291,14 @@ export const ProjectsSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary pc-btn pc-modal-launch-btn"
-                  onClick={() => soundFx.playProjectsClick()}
+                  onClick={() => {
+                    soundFx.playProjectsClick();
+                    trackProjectInteraction(
+                      activeModalProject.name,
+                      'launch_live',
+                      activeModalProject.link
+                    );
+                  }}
                 >
                   {activeModalProject.linkText || 'LAUNCH LIVE APP ↗'}
                 </a>

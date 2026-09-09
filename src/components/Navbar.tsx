@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLenis } from '@lenis/react';
 import { smoothScrollToSection } from '../utils/navigation';
 import { soundFx } from '../utils/audioEffects';
+import { trackSectionView } from '../utils/analytics';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState<boolean>(false);
@@ -39,6 +40,7 @@ export const Navbar: React.FC = () => {
     e.preventDefault();
     soundFx.playHudClick();
     setMobileMenuOpen(false);
+    trackSectionView(sectionKey);
     smoothScrollToSection(sectionKey, lenis);
   };
 

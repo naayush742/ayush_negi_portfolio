@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { trackContactSubmit } from '../utils/analytics';
 
 export const ContactSection: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -49,6 +50,8 @@ export const ContactSection: React.FC = () => {
         timestamp: serverTimestamp(),
         createdAt: new Date().toISOString(),
       });
+
+      trackContactSubmit(formData.service);
 
       setSubmitted(true);
       setFormData({
